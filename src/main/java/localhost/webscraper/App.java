@@ -1,15 +1,15 @@
 package localhost.webscraper;
 
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.DomElement;
+import com.gargoylesoftware.htmlunit.html.DomNodeList;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.gargoylesoftware.htmlunit.Page;
-import com.gargoylesoftware.htmlunit.TextPage;
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class App {
     private static final Logger logger = LoggerFactory.getLogger(App.class.getName());
@@ -17,7 +17,7 @@ public class App {
     private static Map<String, String> data = new HashMap<>();
 
     public static void main(String[] args) {
-        logger.info("Start scraping.");
+        logger.info("Starting scraping.");
 
         try (WebClient webClient = new WebClient()) {
             webClient.getOptions().setThrowExceptionOnScriptError(false);
@@ -26,11 +26,13 @@ public class App {
             final HtmlPage page = webClient.getPage(
                     configuration.getSiteUri() + "/principais_indicadores.php?cod_negociacao=TAEE11");
             final DomNodeList<DomElement> trs = page.getElementsByTagName("tr");
-            trs.stream().forEach(tr -> extractIndicator(tr.getChildElements()));
+            trs.forEach(tr -> extractIndicator(tr.getChildElements()));
 
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
         }
+
+        logger.info("Scraping finished.");
     }
 
     private static void extractIndicator(Iterable<DomElement> childElements) {

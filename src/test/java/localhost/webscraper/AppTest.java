@@ -27,6 +27,7 @@ class AppTest {
     @AfterAll
     static void afterAll() {
         WIRE_MOCK_SERVER.stop();
+        App.setConfiguration(new Configuration());
     }
 
     @BeforeEach
