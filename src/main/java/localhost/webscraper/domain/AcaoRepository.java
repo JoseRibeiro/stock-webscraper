@@ -1,4 +1,8 @@
 package localhost.webscraper.domain;
 
-public interface AcaoRepository {
+import org.springframework.data.repository.CrudRepository;
+
+public interface AcaoRepository extends CrudRepository<Stock, Long> {
+
+    Stock findByTicker(String ticker);
 }

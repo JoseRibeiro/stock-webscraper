@@ -5,7 +5,6 @@
             <pattern>%logger{35} - %msg%n</pattern>
         </encoder>
     </appender>
-
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <!-- encoders are assigned the type
              ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
@@ -13,14 +12,11 @@
             <pattern>%-4relative [%thread] %-5level %logger - %msg %n</pattern>
         </encoder>
     </appender>
-
     <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
-        <appender-ref ref="STDOUT" />
+        <appender-ref ref="STDOUT"/>
     </appender>
-
-    <logger name="wiremock" level="INFO" />
-
+    <logger name="wiremock" level="INFO"/>
     <root level="DEBUG">
-        <appender-ref ref="ASYNC" />
+        <appender-ref ref="FILE"/>
     </root>
 </configuration>

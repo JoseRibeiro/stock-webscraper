@@ -1,15 +1,15 @@
-package localhost.webscraper;
+package localhost.webscraper.application;
 
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
 
-class ConfigurationTest {
+class ApplicationConfigurationTest {
 
     @Test
     void should_return_default_URI_as_investsite() {
-        final Configuration configuration = new Configuration();
+        final ApplicationConfiguration configuration = new ApplicationConfiguration();
         assertThat(configuration.getSiteUri(), is("https://www.investsite.com.br"));
     }
 }

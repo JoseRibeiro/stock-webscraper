@@ -2,6 +2,7 @@ package localhost.webscraper;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
+import localhost.webscraper.application.ApplicationConfiguration;
 import org.junit.jupiter.api.*;
 
 import java.io.IOException;
@@ -10,7 +11,6 @@ import java.util.Map;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class AppTest {
 
@@ -21,13 +21,13 @@ class AppTest {
         WIRE_MOCK_SERVER = new WireMockServer();
         WIRE_MOCK_SERVER.start();
 
-        App.setConfiguration(new Configuration("http://localhost:8080"));
+        App.setConfiguration(new ApplicationConfiguration("http://localhost:8080"));
     }
 
     @AfterAll
     static void afterAll() {
         WIRE_MOCK_SERVER.stop();
-        App.setConfiguration(new Configuration());
+        App.setConfiguration(new ApplicationConfiguration());
     }
 
     @BeforeEach

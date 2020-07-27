@@ -4,16 +4,19 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.DomElement;
 import com.gargoylesoftware.htmlunit.html.DomNodeList;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import localhost.webscraper.application.ApplicationConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+@SpringBootApplication
 public class App {
     private static final Logger logger = LoggerFactory.getLogger(App.class.getName());
-    private static Configuration configuration = new Configuration();
+    private static ApplicationConfiguration configuration = new ApplicationConfiguration();
     private static Map<String, String> data = new HashMap<>();
 
     public static void main(String[] args) {
@@ -47,8 +50,8 @@ public class App {
         data.put(key, value);
     }
 
-    public static void setConfiguration(Configuration configuration) {
-        App.configuration = configuration;
+    public static void setConfiguration(ApplicationConfiguration applicationConfiguration) {
+        App.configuration = applicationConfiguration;
     }
 
     public static Map<String, String> getData() {
