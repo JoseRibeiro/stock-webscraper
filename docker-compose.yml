@@ -2,11 +2,23 @@ version: "3.8"
 
 services:
   db:
-    image: postgres:12
+    container_name: postgresql_webscraper
+    image: postgres:13
     volumes:
       - ./db-data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: webscraper
       POSTGRES_PASSWORD: webscraper
+      POSTGRES_DB: webscraper
+    ports:
+      - "5432:5432"
+
+  db-test:
+    container_name: postgresql_webscraper_test
+    image: postgres:13
+    environment:
+      POSTGRES_USER: webscraper-test
+      POSTGRES_PASSWORD: webscraper-test
+      POSTGRES_DB: webscraper-test
     ports:
       - "5432:5432"

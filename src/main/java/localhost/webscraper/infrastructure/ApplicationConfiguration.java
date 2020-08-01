@@ -1,5 +1,6 @@
-package localhost.webscraper.application;
+package localhost.webscraper.infrastructure;
 
+import liquibase.integration.spring.SpringLiquibase;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +14,6 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.TransactionManager;
 
 import javax.sql.DataSource;
-import java.sql.SQLException;
 
 @Configuration
 @EnableJdbcRepositories(basePackages = "localhost.webscraper.domain")
@@ -59,6 +59,14 @@ public class ApplicationConfiguration extends AbstractJdbcConfiguration {
     @Bean
     TransactionManager transactionManager(DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);
+    }
+
+    @Bean
+    SpringLiquibase liquibase() {
+        final SpringLiquibase springLiquibase = new SpringLiquibase();
+        springLiquibase.setChangeLog("classpath:changeLog.postgresql.sql");
+        springLiquibase.setDataSource(dataSource());
+        return springLiquibase;
     }
 
     public String getSiteUri() {

@@ -4,22 +4,33 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.DomElement;
 import com.gargoylesoftware.htmlunit.html.DomNodeList;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import localhost.webscraper.application.ApplicationConfiguration;
+import localhost.webscraper.domain.Stock;
+import localhost.webscraper.domain.StockRepository;
+import localhost.webscraper.infrastructure.ApplicationConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @SpringBootApplication
-public class App {
-    private static final Logger logger = LoggerFactory.getLogger(App.class.getName());
-    private static ApplicationConfiguration configuration = new ApplicationConfiguration();
-    private static Map<String, String> data = new HashMap<>();
+public class App implements CommandLineRunner {
 
-    public static void main(String[] args) {
+    @Autowired
+    private StockRepository stockRepository;
+
+    @Autowired
+    private ApplicationConfiguration configuration;
+
+    private static final Logger logger = LoggerFactory.getLogger(App.class.getName());
+    private Map<String, String> data = new HashMap<>();
+
+    public void run(String... args) {
         logger.info("Starting scraping.");
 
         try (WebClient webClient = new WebClient()) {
@@ -31,6 +42,7 @@ public class App {
             final DomNodeList<DomElement> trs = page.getElementsByTagName("tr");
             trs.forEach(tr -> extractIndicator(tr.getChildElements()));
 
+            saveStock();
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
         }
@@ -38,7 +50,13 @@ public class App {
         logger.info("Scraping finished.");
     }
 
-    private static void extractIndicator(Iterable<DomElement> childElements) {
+    private void saveStock() {
+        final String taee11 = "TAEE11";
+        Stock stock = Optional.ofNullable(stockRepository.findByTicker(taee11)).orElse(new Stock(taee11));
+        stockRepository.save(stock);
+    }
+
+    private void extractIndicator(Iterable<DomElement> childElements) {
         String key = null, value = null;
         for (DomElement td : childElements) {
             if (td.getAttribute("class").equalsIgnoreCase("esquerda")) {
@@ -50,11 +68,7 @@ public class App {
         data.put(key, value);
     }
 
-    public static void setConfiguration(ApplicationConfiguration applicationConfiguration) {
-        App.configuration = applicationConfiguration;
-    }
-
-    public static Map<String, String> getData() {
+    public Map<String, String> getData() {
         return data;
     }
 }

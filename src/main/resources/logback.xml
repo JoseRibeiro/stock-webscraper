@@ -2,20 +2,22 @@
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
         <file>webscraper.log</file>
         <encoder>
-            <pattern>%logger{35} - %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd_HH:mm:ss.SSS} [%thread] %-5level %logger - %msg %n</pattern>
         </encoder>
     </appender>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <!-- encoders are assigned the type
              ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
         <encoder>
-            <pattern>%-4relative [%thread] %-5level %logger - %msg %n</pattern>
+            <pattern>%d{yyyy-MM-dd_HH:mm:ss.SSS} [%thread] %-5level %logger - %msg %n</pattern>
         </encoder>
     </appender>
     <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
         <appender-ref ref="STDOUT"/>
     </appender>
-    <logger name="wiremock" level="INFO"/>
+    <logger name="wiremock" level="INFO" additivity="false"/>
+    <logger name="com.gargoylesoftware.htmlunit" level="WARN" additivity="false"/>
+    <logger name="org.apache" level="WARN" additivity="false"/>
     <root level="DEBUG">
         <appender-ref ref="FILE"/>
     </root>

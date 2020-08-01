@@ -1,4 +1,4 @@
-package localhost.webscraper.application;
+package localhost.webscraper.infrastructure;
 
 import org.junit.jupiter.api.Test;
 
