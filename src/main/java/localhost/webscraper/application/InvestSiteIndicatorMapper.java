@@ -10,7 +10,7 @@ import java.util.Optional;
 @Component
 public class InvestSiteIndicatorMapper implements IndicatorMapper {
 
-    private static final String PRICE_TO_EARNINGS = "P/L";
+    private static final String PRICE_TO_EARNINGS = "Preço/Lucro";
 
     @Override
     public void mapIndicatorsToAttributes(Map<String, String> indicators, Stock stock) {

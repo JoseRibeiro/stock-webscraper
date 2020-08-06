@@ -1,6 +1,5 @@
 package integration;
 
-import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import localhost.webscraper.App;
 import localhost.webscraper.domain.Stock;
@@ -12,19 +11,17 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.io.IOException;
-import java.util.Map;
+import java.math.BigDecimal;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.any;
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 
 @SpringJUnitConfig(classes = App.class)
 @Sql(scripts = {"classpath:cleanup-database.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-class AppTest {
+class AppIntegrationTest {
 
     private static final String TAEE11 = "TAEE11";
-    public static WireMockServer WIRE_MOCK_SERVER;
 
     @Autowired
     private StockRepository stockRepository;
@@ -37,28 +34,17 @@ class AppTest {
 
     @BeforeAll
     static void beforeAll() {
-        WIRE_MOCK_SERVER = new WireMockServer();
-        WIRE_MOCK_SERVER.start();
+        WireMockTestSetup.startWireMockServer();
     }
 
     @AfterAll
     static void afterAll() {
-        WIRE_MOCK_SERVER.stop();
+        WireMockTestSetup.stopWireMockServer();
     }
 
     @BeforeEach
     void setUp() throws IOException {
-        configuration.setSiteUri("http://localhost:8080");
-
-        stubFor(any(anyUrl())
-                .atPriority(10)
-                .willReturn(aResponse()
-                        .withStatus(404)));
-
-        stubFor(get(urlEqualTo("/principais_indicadores.php?cod_negociacao=" + TAEE11))
-                .willReturn(aResponse()
-                        .withHeader("Content-Type", "text/html")
-                        .withBody(AppTest.class.getResourceAsStream("/InvestSite-" + TAEE11 + ".html").readAllBytes())));
+        WireMockTestSetup.setUpWiremock(configuration, TAEE11);
     }
 
     @AfterEach
@@ -69,10 +55,9 @@ class AppTest {
     @Test
     void run() {
         app.run();
-        Map<String, String> data = app.getData();
-        assertThat(data, hasEntry("EV/EBITDA", "8,89"));
         final Stock taesa = stockRepository.findByTicker(TAEE11);
         assertThat(taesa, is(notNullValue()));
+        assertThat(taesa.getPriceToEarnings(), is(new BigDecimal("8.13")));
     }
 
     @Test

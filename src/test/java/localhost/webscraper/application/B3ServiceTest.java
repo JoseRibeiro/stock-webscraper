@@ -15,7 +15,8 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -46,7 +47,7 @@ class B3ServiceTest {
 
     @Test
     void shouldCreateStockWithTheIndicators() {
-        Map<String, String> indicators = Map.of("P/L", "9,9");
+        Map<String, String> indicators = Map.of("Preço/Lucro", "9,9");
         when(scraper.scrapIndicators(B3Tickers.TAEE11.name())).thenReturn(indicators);
 
         service.updateStockIndicators();

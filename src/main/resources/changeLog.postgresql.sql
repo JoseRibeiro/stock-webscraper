@@ -15,3 +15,12 @@ alter table stock add column gross_debt_to_net_worth decimal(2, 2);
 alter table stock add column return_on_equity decimal(2, 2);
 alter table stock add column dividend_yield decimal(2, 2);
 alter table stock add column dividend_payout decimal(2, 2);
+
+--changeset joseribeiro:20200805-1
+alter table stock alter column price_to_earnings type decimal(4, 2);
+alter table stock alter column ev_to_ebitda type decimal(4, 2);
+alter table stock alter column current_ratio type decimal(4, 2);
+alter table stock alter column gross_debt_to_net_worth type decimal(4, 2);
+alter table stock alter column return_on_equity type decimal(4, 2);
+alter table stock alter column dividend_yield type decimal(4, 2);
+alter table stock alter column dividend_payout type decimal(4, 2);
