@@ -57,11 +57,6 @@ public class ApplicationConfiguration extends AbstractJdbcConfiguration {
     }
 
     @Bean
-    TransactionManager transactionManager(DataSource dataSource) {
-        return new DataSourceTransactionManager(dataSource);
-    }
-
-    @Bean
     SpringLiquibase liquibase() {
         final SpringLiquibase springLiquibase = new SpringLiquibase();
         springLiquibase.setChangeLog("classpath:changeLog.postgresql.sql");

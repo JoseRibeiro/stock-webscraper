@@ -24,3 +24,15 @@ alter table stock alter column gross_debt_to_net_worth type decimal(4, 2);
 alter table stock alter column return_on_equity type decimal(4, 2);
 alter table stock alter column dividend_yield type decimal(4, 2);
 alter table stock alter column dividend_payout type decimal(4, 2);
+
+--changeset joseribeiro:20200901-1
+alter table stock alter column market_cap type decimal(14, 2);
+
+--changeset joseribeiro:20200901-2
+alter table stock alter column price_to_earnings type decimal(12, 2);
+alter table stock alter column ev_to_ebitda type decimal(12, 2);
+alter table stock alter column current_ratio type decimal(12, 2);
+alter table stock alter column gross_debt_to_net_worth type decimal(12, 2);
+alter table stock alter column return_on_equity type decimal(12, 2);
+alter table stock alter column dividend_yield type decimal(12, 2);
+alter table stock alter column dividend_payout type decimal(12, 2);

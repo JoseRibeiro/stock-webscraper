@@ -9,20 +9,49 @@ public class Stock {
     @Id
     private Long id;
 
+    /**
+     * Ticker.
+     */
     private String ticker;
 
+    /**
+     * Valor de mercado.
+     */
+    private BigDecimal marketCap;
+
+    /**
+     * Preço/Lucro.
+     */
     private BigDecimal priceToEarnings;
 
+    /**
+     * EV/EBITDA
+     */
     private BigDecimal evToEbitda;
 
+    /**
+     * Liquidez corrente.
+     */
     private BigDecimal currentRatio;
 
+    /**
+     * Dívida bruta/Patrimônio Líquido.
+     */
     private BigDecimal grossDebtToNetWorth;
 
+    /**
+     * ROE.
+     */
     private BigDecimal returnOnEquity;
 
+    /**
+     * Dividend yield.
+     */
     private BigDecimal dividendYield;
 
+    /**
+     * Dividend payout.
+     */
     private BigDecimal dividendPayout;
 
     public Stock(String ticker) {
@@ -30,6 +59,14 @@ public class Stock {
     }
 
     public Stock() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTicker() {
@@ -40,12 +77,12 @@ public class Stock {
         this.ticker = ticker;
     }
 
-    public Long getId() {
-        return id;
+    public BigDecimal getMarketCap() {
+        return marketCap;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setMarketCap(BigDecimal marketCap) {
+        this.marketCap = marketCap;
     }
 
     public BigDecimal getPriceToEarnings() {
@@ -102,5 +139,21 @@ public class Stock {
 
     public void setDividendPayout(BigDecimal dividendPayout) {
         this.dividendPayout = dividendPayout;
+    }
+
+    @Override
+    public String toString() {
+        return "Stock{" +
+                "id=" + id +
+                ", ticker='" + ticker + '\'' +
+                ", marketCap=" + marketCap +
+                ", priceToEarnings=" + priceToEarnings +
+                ", evToEbitda=" + evToEbitda +
+                ", currentRatio=" + currentRatio +
+                ", grossDebtToNetWorth=" + grossDebtToNetWorth +
+                ", returnOnEquity=" + returnOnEquity +
+                ", dividendYield=" + dividendYield +
+                ", dividendPayout=" + dividendPayout +
+                '}';
     }
 }

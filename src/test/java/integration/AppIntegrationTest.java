@@ -14,8 +14,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 
 @SpringJUnitConfig(classes = App.class)
 @Sql(scripts = {"classpath:cleanup-database.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
@@ -62,8 +61,13 @@ class AppIntegrationTest {
 
     @Test
     void runOverExistingStock() {
+        // TODO improve test to assure that the stock was actually updated between executions of run.
+        /* Run app to create stocks. */
         app.run();
+
+        /* Second run to update the stocks */
         app.run();
+
         final Stock taesa = stockRepository.findByTicker(TAEE11);
         assertThat(taesa, is(notNullValue()));
     }

@@ -26,6 +26,7 @@ public class WireMockTestSetup {
         stubFor(any(anyUrl())
                 .atPriority(10)
                 .willReturn(aResponse()
+                        .withHeader("Content-Type", "text/html")
                         .withStatus(404)));
 
         stubFor(get(urlEqualTo("/principais_indicadores.php?cod_negociacao=" + ticker))
