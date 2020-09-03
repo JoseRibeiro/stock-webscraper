@@ -10,19 +10,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.comparesEqualTo;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 
 class InvestSiteIndicatorMapperTest {
 
-    final static Map<String, String> indicators = new HashMap<>();
+    final Map<String, String> indicators = new HashMap<>();
             
     private final InvestSiteIndicatorMapper investSiteIndicatorMapper = new InvestSiteIndicatorMapper();
 
     private Stock stock;
 
-    @BeforeAll
-    static void beforeAll() {
+    @BeforeEach
+    void setUp() {
+        stock = new Stock("ABCD01");
 
         /* Initializes with simple put to reproduce nullable key and value behavior. */
         indicators.put(null, null);
@@ -104,11 +104,6 @@ class InvestSiteIndicatorMapperTest {
         indicators.put("Patrimônio Líquido", "R$ 5,30 B");
     }
 
-    @BeforeEach
-    void setUp() {
-        stock = new Stock("ABCD01");
-    }
-
     @Test
     void shouldMapIndicatorMarketCapBillionScale() {
         investSiteIndicatorMapper.mapIndicatorsToAttributes(indicators, stock);
@@ -123,6 +118,15 @@ class InvestSiteIndicatorMapperTest {
         investSiteIndicatorMapper.mapIndicatorsToAttributes(indicators, stock);
 
         assertThat(stock.getMarketCap(), comparesEqualTo(new BigDecimal("210000000")));
+    }
+
+    @Test
+    void shouldMapIndicatorMarketCapEmpty() {
+        indicators.put("Market Cap", "R$ ");
+
+        investSiteIndicatorMapper.mapIndicatorsToAttributes(indicators, stock);
+
+        assertThat(stock.getMarketCap(), is(nullValue()));
     }
 
     @Test
@@ -143,14 +147,14 @@ class InvestSiteIndicatorMapperTest {
     void shouldMapIndicatorCurrentRatio() {
         investSiteIndicatorMapper.mapIndicatorsToAttributes(indicators, stock);
 
-        assertThat(stock.getCurrentRatio(), is(new BigDecimal("0")));
+        assertThat(stock.getCurrentRatio(), is(nullValue()));
     }
 
     @Test
     void shouldMapIndicatorGrossDebtToNetWorth() {
         investSiteIndicatorMapper.mapIndicatorsToAttributes(indicators, stock);
 
-        assertThat(stock.getGrossDebtToNetWorth(), is(new BigDecimal("0")));
+        assertThat(stock.getGrossDebtToNetWorth(), is(nullValue()));
     }
 
     @Test
@@ -171,6 +175,6 @@ class InvestSiteIndicatorMapperTest {
     void shouldMapIndicatorDividendPayout() {
         investSiteIndicatorMapper.mapIndicatorsToAttributes(indicators, stock);
 
-        assertThat(stock.getDividendPayout(), is(new BigDecimal("0")));
+        assertThat(stock.getDividendPayout(), is(nullValue()));
     }
 }

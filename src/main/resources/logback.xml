@@ -16,6 +16,9 @@
         <appender-ref ref="STDOUT"/>
     </appender>
     <logger name="wiremock" level="INFO" additivity="false"/>
+    <logger name="org.springframework.boot" level="INFO" additivity="false"/>
+    <logger name="org.springframework.jdbc" level="INFO" additivity="false"/>
+    <logger name="com.zaxxer.hikari.pool.HikariPool" level="INFO" additivity="false"/>
     <logger name="com.gargoylesoftware.htmlunit" level="WARN" additivity="false"/>
     <logger name="org.apache" level="WARN" additivity="false"/>
     <root level="DEBUG">

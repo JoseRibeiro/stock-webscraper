@@ -5,6 +5,7 @@ import com.gargoylesoftware.htmlunit.html.DomElement;
 import com.gargoylesoftware.htmlunit.html.DomNodeList;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import localhost.webscraper.application.Scraper;
+import org.apache.commons.logging.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -27,12 +28,18 @@ public class InvestSiteScraper implements Scraper {
 
     @Override
     public Map<String, String> scrapIndicators(String ticker) {
+        LOG.debug("Creating webclient for {}", ticker);
+
         try (WebClient webClient = new WebClient()) {
             webClient.getOptions().setThrowExceptionOnScriptError(false);
             webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
 
+            LOG.debug("Get page for {}", ticker);
             final HtmlPage page = webClient.getPage(
                     configuration.getSiteUri() + "/principais_indicadores.php?cod_negociacao=" + ticker);
+
+            LOG.debug("Got positive response for {}", ticker);
+
             final DomNodeList<DomElement> trs = page.getElementsByTagName("tr");
             Map<String, String> data = new HashMap<>();
             trs.forEach(tr -> extractIndicator(tr.getChildElements(), data));

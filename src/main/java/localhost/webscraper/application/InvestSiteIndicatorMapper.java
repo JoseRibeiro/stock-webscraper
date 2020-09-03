@@ -47,11 +47,16 @@ public class InvestSiteIndicatorMapper implements IndicatorMapper {
     private BigDecimal getBigDecimal(Map<String, String> indicators, String indicator) {
         LOG.info("Indicator: {}", indicator);
 
-        final String sanitizedIndicator = Optional.ofNullable(indicators.get(indicator)).orElse("0")
+        // TODO this method definitely needs a refactor.
+        final String sanitizedIndicator = Optional.ofNullable(indicators.get(indicator)).orElse("")
                 .replace("R$ ", "")
                 .replace("%", "")
                 .replaceAll("\\.", "")
                 .replace(",", ".");
+
+        if (sanitizedIndicator.isBlank()) {
+            return null;
+        }
 
         if (sanitizedIndicator.contains(" B")) {
             final String indicatorWithoutScale = sanitizedIndicator.replace(" B", "");
